@@ -1,4 +1,37 @@
 {
-  "lastSyncAt": null,
-  "metrics": []
+  "lastSyncAt": "2025-11-19T10:19:41.882Z",
+  "metrics": [
+    {
+      "metric": "Scope 1 Emissions",
+      "scope": "scope_1",
+      "value_tonnes": 242.9,
+      "source_count": 3,
+      "details": [
+        {
+          "source": "ERP",
+          "field": "co2_scope_1",
+          "scope": "scope_1",
+          "unit": "tonnes",
+          "rawValue": 245.7,
+          "value_tonnes": 245.7
+        },
+        {
+          "source": "Supplier Portal",
+          "field": "direct_emission_tonnes",
+          "scope": "scope_1",
+          "unit": "tonnes",
+          "rawValue": 240,
+          "value_tonnes": 240
+        },
+        {
+          "source": "IoT Sensor",
+          "field": "scope1_kg",
+          "scope": "scope_1",
+          "unit": "kg",
+          "rawValue": 243000,
+          "value_tonnes": 243
+        }
+      ]
+    }
+  ]
 }
