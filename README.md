@@ -1,1 +1,0 @@
-# snowkap-sustainability-sync-puzzle
