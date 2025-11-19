@@ -14,15 +14,10 @@ export default function App() {
 
         try {
             const res = await fetch(`${BACKEND_URL}/sync`);
-            if (!res.ok) {
-                const errBody = await res.json().catch(() => ({}));
-                throw new Error(errBody.error || errBody.message || "Sync failed");
-            }
             const data = await res.json();
             setResult(data);
         } catch (err) {
-            console.error(err);
-            setError(err.message);
+            setError("Failed to sync data.");
         } finally {
             setLoading(false);
         }
@@ -32,110 +27,137 @@ export default function App() {
         <div
             style={{
                 minHeight: "100vh",
-                fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                width: "100vw",
+                margin: 0,
+                padding: "20px",
                 background: "#0f172a",
-                color: "#e5e7eb",
+                color: "#e2e8f0",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "24px"
+                boxSizing: "border-box"
             }}
         >
             <div
                 style={{
-                    maxWidth: "720px",
                     width: "100%",
-                    background: "#020617",
+                    maxWidth: "800px",
+                    background: "#1e293b",
                     borderRadius: "16px",
                     padding: "24px",
-                    boxShadow: "0 20px 40px rgba(15,23,42,0.8)",
-                    border: "1px solid #1f2937"
+                    boxShadow: "0 10px 25px rgba(0,0,0,0.4)",
+                    border: "1px solid #334155",
+                    boxSizing: "border-box"
                 }}
             >
-                <h1 style={{ fontSize: "24px", marginBottom: "8px" }}>
+                <h1
+                    style={{
+                        fontSize: "22px",
+                        fontWeight: 700,
+                        marginBottom: "8px",
+                        textAlign: "center"
+                    }}
+                >
                     Sustainability Sync Board
                 </h1>
 
-                <p style={{ fontSize: "14px", color: "#9ca3af", marginBottom: "16px" }}>
-                    Prototype that ingests emissions from 3 sources, normalizes them, and
-                    displays a unified Scope 1 emission value.
-                </p>
-
-                {/* Sync Button */}
-                <button
-                    onClick={handleSync}
-                    disabled={loading}
+                <p
                     style={{
-                        padding: "10px 18px",
-                        background: loading ? "#4b5563" : "#22c55e",
-                        color: "#020617",
-                        borderRadius: "999px",
-                        border: "none",
-                        fontWeight: 600,
-                        cursor: loading ? "not-allowed" : "pointer",
                         fontSize: "14px",
-                        marginBottom: "16px"
+                        textAlign: "center",
+                        color: "#94a3b8",
+                        marginBottom: "20px"
                     }}
                 >
-                    {loading ? "Syncing..." : "Sync Data"}
-                </button>
+                    Ingest emission data from 3 sources → Normalize → Unify → Display
+                </p>
 
-                {/* Error Box */}
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <button
+                        onClick={handleSync}
+                        disabled={loading}
+                        style={{
+                            padding: "10px 20px",
+                            background: loading ? "#64748b" : "#22c55e",
+                            color: "#0f172a",
+                            border: "none",
+                            borderRadius: "999px",
+                            cursor: loading ? "not-allowed" : "pointer",
+                            fontWeight: 600,
+                            fontSize: "14px"
+                        }}
+                    >
+                        {loading ? "Syncing..." : "Sync Data"}
+                    </button>
+                </div>
+
                 {error && (
                     <div
                         style={{
-                            marginTop: "8px",
-                            padding: "8px 12px",
                             background: "#7f1d1d",
+                            color: "#fecaca",
                             borderRadius: "8px",
-                            fontSize: "13px",
-                            color: "#fecaca"
+                            padding: "10px",
+                            textAlign: "center",
+                            marginBottom: "16px",
+                            fontSize: "14px"
                         }}
                     >
                         {error}
                     </div>
                 )}
 
-                {/* Sync Result */}
                 {result && (
                     <div
                         style={{
-                            marginTop: "20px",
+                            background: "#0f172a",
                             padding: "16px",
-                            background: "#020617",
                             borderRadius: "12px",
-                            border: "1px solid #1f2937"
+                            border: "1px solid #334155"
                         }}
                     >
-                        <div style={{ marginBottom: "8px", fontSize: "14px" }}>
+                        <p style={{ fontSize: "14px", marginBottom: "10px" }}>
                             ✅ <strong>{result.message}</strong>
-                        </div>
+                        </p>
 
-                        <h2 style={{ fontSize: "18px", marginBottom: "4px" }}>
+                        <h2 style={{ fontSize: "18px", marginBottom: "8px" }}>
                             Unified Scope 1 Emissions
                         </h2>
 
-                        <p style={{ fontSize: "32px", margin: "0 0 8px 0" }}>
+                        <p
+                            style={{
+                                fontSize: "32px",
+                                margin: "0 0 10px 0",
+                                fontWeight: 700
+                            }}
+                        >
                             {result.unified.value_tonnes}{" "}
-                            <span style={{ fontSize: "16px", color: "#9ca3af" }}>tonnes</span>
+                            <span style={{ fontSize: "16px", color: "#94a3b8" }}>tonnes</span>
                         </p>
 
-                        <p style={{ fontSize: "13px", color: "#9ca3af", marginBottom: "12px" }}>
-                            Metric: {result.unified.metric} | Sources:{" "}
+                        <p style={{ fontSize: "14px", color: "#94a3b8" }}>
+                            Metric: {result.unified.metric} • Sources:{" "}
                             {result.unified.source_count}
                         </p>
 
-                        {/* Table */}
-                        <div style={{ fontSize: "13px", color: "#9ca3af" }}>
-                            <div style={{ marginBottom: "6px", fontWeight: 600 }}>
-                                Source breakdown:
-                            </div>
+                        <h3
+                            style={{
+                                marginTop: "20px",
+                                fontSize: "16px",
+                                fontWeight: 600,
+                                marginBottom: "10px"
+                            }}
+                        >
+                            Source Breakdown
+                        </h3>
 
+                        <div style={{ overflowX: "auto" }}>
                             <table
                                 style={{
                                     width: "100%",
                                     borderCollapse: "collapse",
-                                    fontSize: "12px"
+                                    fontSize: "13px",
+                                    color: "#e2e8f0"
                                 }}
                             >
                                 <thead>
@@ -169,8 +191,8 @@ export default function App() {
 
 const th = {
     textAlign: "left",
-    paddingBottom: "6px",
-    borderBottom: "1px solid #1f2937"
+    padding: "8px 4px",
+    borderBottom: "1px solid #334155"
 };
 
 const thRight = {
@@ -179,10 +201,12 @@ const thRight = {
 };
 
 const td = {
-    padding: "4px 0"
+    padding: "8px 4px",
+    borderBottom: "1px solid #334155"
 };
 
 const tdRight = {
-    padding: "4px 0",
-    textAlign: "right"
+    padding: "8px 4px",
+    textAlign: "right",
+    borderBottom: "1px solid #334155"
 };
